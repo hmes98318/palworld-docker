@@ -1,0 +1,18 @@
+version: '3.8'
+
+services:
+  palserver:
+    image: palserver:0.1.0
+    container_name: palserver
+    restart: always
+    environment:
+      TZ: "Asia/Taipei"
+      PORT: 8211
+      PLAYERS: 16
+      MULTITHREAD: true
+      CHECK_UPDATE_ON_START: false
+    volumes:
+      - ./palSaved:/home/steam/palworld/Pal/Saved
+    ports:
+      - 8211:8211/udp
+
