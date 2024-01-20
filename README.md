@@ -21,10 +21,11 @@ You must modify the permissions of your host's mounting directory, otherwise the
 (ex: `chmod -R 777 ./palSaved`)  
 
 The game settings are in the local directory `./palSaved/Config/LinuxServer/PalWorldSettings.ini` (it will be generated after running it for the first time).  
-Refer to `DefaultPalWorldSettings.ini` to modify.  
+Refer to [`DefaultPalWorldSettings.ini`](./DefaultPalWorldSettings.ini) to modify.  
 
 
 ## Docker Compose
+Refer to this [docker-compose.yml](./docker-compose.yml) example file
 
 ```yml
 version: '3.8'
