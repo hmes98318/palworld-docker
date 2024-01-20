@@ -2,7 +2,7 @@ version: '3.8'
 
 services:
   palserver:
-    image: palserver:0.1.0
+    image: hmes98318/palworld-docker:0.1.0
     container_name: palserver
     restart: always
     environment:
