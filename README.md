@@ -11,6 +11,8 @@ Docker container that can easily run Palworld dedicated server
 | MULTITHREAD           | Whether to enable multithreading  | true           | true/false           |
 | CHECK_UPDATE_ON_START | Whether to automatically check for game updates every time you start it   | true           | true/false   |
 
+### The first startup will download the Palworld server file, which may take a while (depends on your network condition)  
+
 
 ## Volumes
 | Container mount point             | Description           |
