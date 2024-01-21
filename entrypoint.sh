@@ -27,7 +27,7 @@ print_system_info() {
   echo "--------------------"
   echo "OS: $(cat /etc/os-release | grep "^PRETTY_NAME" | cut -d'=' -f2)"
   echo "CPU: $(grep 'model name' /proc/cpuinfo | uniq | cut -d':' -f2)"
-  echo "RAM: $(awk '/MemAvailable/ {printf( "%d\n", $2 / 1024000 )}' /proc/meminfo)GB/$(awk '/MemTotal/ {printf( "%d\n", $2 / 1024000 )}' /proc/meminfo)GB"
+  echo "RAM: $(awk '/MemTotal/ {total=$2} /MemFree/ {free=$2} END {printf("%.2fGB/%.2fGB", (total-free)/1024000, total/1024000)}' /proc/meminfo)"
   echo "Disk Space: $(df -h / | awk 'NR==2{printf "%s/%s\n", $3, $2}')"
   echo "--------------------"
   echo "PalServer-docker: $VERSION"
