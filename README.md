@@ -34,7 +34,7 @@ version: '3.8'
 
 services:
   palserver:
-    image: hmes98318/palworld-docker:0.1.1
+    image: hmes98318/palworld-docker:latest
     container_name: palserver
     restart: always
     environment:
@@ -63,5 +63,5 @@ docker run -d \
   -e CHECK_UPDATE_ON_START=false \
   -v $(pwd)/palSaved:/home/steam/palworld/Pal/Saved \
   -p 8211:8211/udp \
-  hmes98318/palworld-docker:0.1.1
+  hmes98318/palworld-docker:latest
 ```
