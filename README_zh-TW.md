@@ -1,5 +1,5 @@
 # palworld-docker
-[`English`](./README.md) | `繁體中文`
+[English](./README.md) | `繁體中文`
 
 一個可以輕鬆運行 Palworld 專用伺服器的 Docker 容器  
 [在 Docker Hub 上查看](https://hub.docker.com/r/hmes98318/palworld-docker)  
