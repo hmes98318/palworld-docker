@@ -24,8 +24,10 @@
 你必須修改主機掛載目錄的權限，否則容器無法讀取。  
  (例如：`chmod -R 777 ./palSaved`)  
 
+
+## 遊戲設置
 遊戲設置位於本地目錄 `./palSaved/Config/LinuxServer/PalWorldSettings.ini` (首次運行後會自動生成)。  
-參考 [`DefaultPalWorldSettings.ini`](./DefaultPalWorldSettings.ini) 進行修改。  
+請參考 [`DefaultPalWorldSettings.ini`](./DefaultPalWorldSettings.ini) 和[官方文檔](https://tech.palworldgame.com/optimize-game-balance)進行修改。  
 
 
 ## Docker Compose

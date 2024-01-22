@@ -24,9 +24,10 @@ Docker container that can easily run Palworld dedicated server
 You must modify the permissions of your host's mounting directory, otherwise the container cannot read it.  
 (ex: `chmod -R 777 ./palSaved`)  
 
-The game settings are in the local directory `./palSaved/Config/LinuxServer/PalWorldSettings.ini` (it will be generated after running it for the first time).  
-Refer to [`DefaultPalWorldSettings.ini`](./DefaultPalWorldSettings.ini) to modify.  
 
+## Game settings
+The game settings are in the local directory `./palSaved/Config/LinuxServer/PalWorldSettings.ini` (it will be generated after running it for the first time).  
+Please refer to [`DefaultPalWorldSettings.ini`](./DefaultPalWorldSettings.ini) and [official documents](https://tech.palworldgame.com/optimize-game-balance) for modification.  
 
 ## Docker Compose
 Refer to this [docker-compose.yml](./docker-compose.yml) example file
