@@ -1,4 +1,6 @@
 # palworld-docker
+`English` | [繁體中文](./README_zh-TW.md)
+
 Docker container that can easily run Palworld dedicated server  
 [View on Docker Hub](https://hub.docker.com/r/hmes98318/palworld-docker)  
 
@@ -9,7 +11,7 @@ Docker container that can easily run Palworld dedicated server
 | PORT                  | The server listening port         | 8211           | 0-65535              |
 | PLAYERS               | Max number of players             | 16             | 1-32                 |
 | MULTITHREAD           | Whether to enable multithreading  | true           | true/false           |
-| CHECK_UPDATE_ON_START | Whether to automatically check for game updates every time you start it   | true           | true/false   |
+| CHECK_UPDATE_ON_START | Whether to automatically check for game updates every time you start it   | false           | true/false   |
 
 ### The first startup will download the Palworld server file, which may take a while (depends on your network condition)  
 
