@@ -3,9 +3,10 @@
 # Workdir:  /home/steam/steamcmd
 # User:     steam
 
-VERSION="v0.1.2"
+VERSION="v0.2.0"
 STEAMCMD="/home/steam/steamcmd/steamcmd.sh"
 PALWORLD_DIR="/home/steam/palworld"
+PALWORLD_SETTINGS="$PALWORLD_DIR/Pal/Saved/Config/LinuxServer/PalWorldSettings.ini"
 
 
 # Install PalServer
@@ -41,43 +42,136 @@ print_system_info() {
   echo "----------------------------------------"
 }
 
+# Set startup arguments
+set_args() {
+  if [ -n "$PORT" ]; then
+    args+="-port=$PORT "
+  fi
+
+  if [ -n "$PLAYERS" ]; then
+    args+="-players=$PLAYERS "
+  fi
+
+  #---------- Community server setup ----------
+
+  if [ -n "$COMMUNITY" ]; then
+    args+="EpicApp=PalServer "
+  fi
+
+  if [ -n "$COMMUNITY_IP" ]; then
+    args+="-publicip=$COMMUNITY_IP "
+  fi
+
+  if [ -n "$COMMUNITY_PORT" ]; then
+    args+="-publicport=$COMMUNITY_PORT "
+  else
+    if [ -n "$COMMUNITY" ]; then
+      args+="-publicport=8211 "
+    fi
+  fi
+
+  #---------- END Community server setup ----------
+
+  if [ "$MULTITHREAD" = "true" ]; then
+    args+="-useperfthreads -NoAsyncLoadingThread -UseMultithreadForDS "
+  fi
+}
+
+# Load PalWorld settings to PalWorldSettings.ini
+set_settings() {
+  if [ -n "$ADMIN_PASSWORD" ]; then
+    ADMIN_PASSWORD=$(echo "$ADMIN_PASSWORD" | tr -d '"')
+  else
+    ADMIN_PASSWORD=""
+  fi
+  sed -i "s/AdminPassword=\"[^\"]*\"/AdminPassword=\"$ADMIN_PASSWORD\"/g" $PALWORLD_SETTINGS
+
+  if [ -n "$SERVER_NAME" ]; then
+    SERVER_NAME=$(echo "$SERVER_NAME" | tr -d '"')
+    sed -i "s/ServerName=\"[^\"]*\"/ServerName=\"$SERVER_NAME\"/g" $PALWORLD_SETTINGS
+  fi
+
+  if [ -n "$SERVER_DESC" ]; then
+    SERVER_DESC=$(echo "$SERVER_DESC" | tr -d '"')
+    sed -i "s/ServerDescription=\"[^\"]*\"/ServerDescription=\"$SERVER_DESC\"/g" $PALWORLD_SETTINGS
+  fi
+
+  if [ -n "$SERVER_PASSWORD" ]; then
+    SERVER_PASSWORD=$(echo "$SERVER_PASSWORD" | tr -d '"')
+  else
+    SERVER_PASSWORD=""
+  fi
+  sed -i "s/ServerPassword=\"[^\"]*\"/ServerPassword=\"$SERVER_PASSWORD\"/g" $PALWORLD_SETTINGS
+
+  # Rcon
+  if [ -n "$RCON_ENABLED" ]; then
+    sed -i "s/RCONEnabled=[^,]*/RCONEnabled=$RCON_ENABLED/g" $PALWORLD_SETTINGS
+
+    if [ -n "$RCON_PORT" ]; then
+      sed -i "s/RCONPort=[^,]*/RCONPort=$RCON_PORT/g" $PALWORLD_SETTINGS
+    else
+      sed -i "s/RCONPort=[^,]*/RCONPort=25575/g" $PALWORLD_SETTINGS
+    fi
+  fi
+}
+
 
 
 
 main(){
+  echo "----------------------------------------"
+  echo "Initializing the PalServer..."
   print_system_info
+
 
   # Check install
   if [ ! -f "$PALWORLD_DIR/PalServer.sh" ]; then
     install_server
+
+    # Error check
+    if [ ! -f "$PALWORLD_DIR/PalServer.sh" ]; then
+      echo "Installation failed: Please make sure to reserve at least 10GB of free disk space." >&2
+      exit 1
+    fi
   else
     check_update
   fi
 
 
-  # Load arguments
+  # Load startup arguments
   args=""
+  set_args
 
-  if [ -n "$PORT" ]; then
-    args+="-port=$PORT "
-  else
-    args+="-port=8211 "
+
+  # Load PalWorld settings
+  # If the settings file does not exist, initialization is performed first
+  echo "----------------------------------------"
+
+  if [ ! -f "$PALWORLD_SETTINGS" ]; then
+    echo "-> Initializing PalServer to generate settings file..."
+    timeout -s SIGTERM 20s "$PALWORLD_DIR/PalServer.sh"
+    cp "$PALWORLD_DIR/DefaultPalWorldSettings.ini" "$PALWORLD_SETTINGS"
+
+    # Check if initialization is successful
+    if [ ! -f "$PALWORLD_SETTINGS" ]; then
+      echo "Initialization failed: Unable to generate settings file." >&2
+      exit 1
+    fi
+
+    sleep 5
+    echo "-> Successfully generated PalServer settings file"
   fi
 
-  if [ -n "$PLAYERS" ]; then
-    args+="-players=$PLAYERS "
-  else
-    args+="-players=32 "
-  fi
-
-  if [ "$MULTITHREAD" = "true" ]; then
-    args+="-useperfthreads -NoAsyncLoadingThread -UseMultithreadForDS "
-  fi
+  set_settings
+  echo "-> Successfully loaded PalServer settings file"
 
 
   # Start server
   echo "----------------------------------------"
-  echo  -e "Startup Parameters: \n $PALWORLD_DIR/PalServer.sh $args "
+  echo -e "Startup Parameters: \n$PALWORLD_DIR/PalServer.sh $args "
+  echo "----------------------------------------"
+  echo -e "PalWorldSettings.ini config: \n"
+  cat "$PALWORLD_SETTINGS"
   echo "----------------------------------------"
   echo "-> Starting the PalServer..."
 
