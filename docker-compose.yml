@@ -8,11 +8,19 @@ services:
     environment:
       TZ: "Asia/Taipei"
       PORT: 8211
-      PLAYERS: 16
+      PLAYERS: 32
       MULTITHREAD: true
+      ADMIN_PASSWORD: "youradminpassword"
+      SERVER_NAME: "Palworld Server"
+      SERVER_DESC: "Palworld Server Description"
+      SERVER_PASSWORD: ""
+      # COMMUNITY: false  # Enable this option if you want your server to appear in the community servers list, please set SERVER_PASSWORD
+      # COMMUNITY_IP: 
+      # COMMUNITY_PORT: 8211
+      RCON_ENABLED: false
+      RCON_PORT: 25575
       CHECK_UPDATE_ON_START: false
     volumes:
       - ./palSaved:/home/steam/palworld/Pal/Saved
     ports:
       - 8211:8211/udp
-
