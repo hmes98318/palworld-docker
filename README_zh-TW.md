@@ -61,7 +61,7 @@ services:
       ADMIN_PASSWORD: "youradminpassword"
       SERVER_NAME: "Palworld Server"
       SERVER_DESC: "Palworld Server Description"
-      # SERVER_PASSWORD: "yourserverpassword"
+      SERVER_PASSWORD: ""
       # COMMUNITY: false  # 如果你希望伺服器顯示在社群伺服器列表中，啟用此選項，(請設定 SERVER_PASSWORD)
       # COMMUNITY_IP: 
       # COMMUNITY_PORT: 8211
