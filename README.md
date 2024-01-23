@@ -11,7 +11,19 @@ Docker container that can easily run Palworld dedicated server
 | PORT                  | The server listening port         | 8211           | 0-65535              |
 | PLAYERS               | Max number of players             | 16             | 1-32                 |
 | MULTITHREAD           | Whether to enable multithreading  | true           | true/false           |
+| ADMIN_PASSWORD        | Server admin password             | None           | string               |
+| SERVER_NAME           | The name of your server           | string         | string               |
+| SERVER_DESC           | Description of your server        | string         | string               |
+| SERVER_PASSWORD       | The password of your server       | None           | string               |
+| COMMUNITY             | Whether the server is appears in the community server list (please set SERVER_PASSWORD)             | false           | true/false               |
+| COMMUNITY_IP          | The IP of the community server    | None           | string               |
+| COMMUNITY_PORT        | The port of the community server  | 8211           | 0-65535              |
+| RCON_ENABLED          | Enable RCON for your server       | true           | true/false           |
+| RCON_PORT             | RCON port number                  | 25575          | 0-65535              |
 | CHECK_UPDATE_ON_START | Whether to automatically check for game updates every time you start it   | false           | true/false   |
+
+If you want to set SERVER_PASSWORD please pay attention to this message  
+The current game test version has a bug where passwords cannot be entered on non-community servers.  
 
 ### The first startup will download the Palworld server file, which may take a while (depends on your network condition)  
 
@@ -43,8 +55,17 @@ services:
     environment:
       TZ: "Asia/Taipei"
       PORT: 8211
-      PLAYERS: 16
+      PLAYERS: 32
       MULTITHREAD: true
+      ADMIN_PASSWORD: "youradminpassword"
+      SERVER_NAME: "Palworld Server"
+      SERVER_DESC: "Palworld Server Description"
+      SERVER_PASSWORD: ""
+      # COMMUNITY: false  # Enable this option if you want your server to appear in the community servers list, please set SERVER_PASSWORD
+      # COMMUNITY_IP: 
+      # COMMUNITY_PORT: 8211
+      RCON_ENABLED: false
+      RCON_PORT: 25575
       CHECK_UPDATE_ON_START: false
     volumes:
       - ./palSaved:/home/steam/palworld/Pal/Saved
@@ -61,10 +82,16 @@ docker run -d \
   --restart always \
   -e TZ="Asia/Taipei" \
   -e PORT=8211 \
-  -e PLAYERS=16 \
+  -e PLAYERS=32 \
   -e MULTITHREAD=true \
+  -e ADMIN_PASSWORD="youradminpassword" \
+  -e SERVER_NAME="Palworld Server" \
+  -e SERVER_DESC="Palworld Server Description" \
+  -e SERVER_PASSWORD="" \
+  -e RCON_ENABLED=false \
+  -e RCON_PORT=25575 \
   -e CHECK_UPDATE_ON_START=false \
-  -v $(pwd)/palSaved:/home/steam/palworld/Pal/Saved \
+  -v ./palSaved:/home/steam/palworld/Pal/Saved \
   -p 8211:8211/udp \
   hmes98318/palworld-docker:latest
 ```

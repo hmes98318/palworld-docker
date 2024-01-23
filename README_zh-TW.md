@@ -8,10 +8,22 @@
 ## Environments
 | 環境變量                  | 描述                                 | 預設值         | 允許值             |
 |------------------------|------------------------------------|--------------|---------------------|
-| PORT                   | 伺服器監聽端口                       | 8211         | 0-65535             |
-| PLAYERS                | 最大玩家數                           | 16           | 1-32                |
-| MULTITHREAD            | 是否啟用多線程                       | true         | true/false          |
+| PORT                   | 伺服器監聽端口                       | 8211            | 0-65535             |
+| PLAYERS                | 最大玩家數                           | 16              | 1-32                |
+| MULTITHREAD            | 是否啟用多線程                       | true            | true/false          |
+| ADMIN_PASSWORD         | 伺服器管理員密碼                     | None            | 字串                 |
+| SERVER_NAME            | 伺服器名稱                         | 字串            | 字串                 |
+| SERVER_DESC            | 伺服器描述                         | 字串            | 字串                 |
+| SERVER_PASSWORD        | 伺服器密碼                         | None            | 字串                 |
+| COMMUNITY              | 是否顯示在社群伺服器清單中 (請設定 SERVER_PASSWORD)    | false       | true/false           |
+| COMMUNITY_IP           | 社群伺服器的 IP 地址               | None              | 字串                 |
+| COMMUNITY_PORT         | 社群伺服器的端口號                 | 8211              | 0-65535              |
+| RCON_ENABLED           | 啟用伺服器的 RCON 功能             | true              | true/false           |
+| RCON_PORT              | RCON 端口號                        | 25575             | 0-65535              |
 | CHECK_UPDATE_ON_START  | 是否在每次啟動時自動檢查遊戲更新         | false         | true/false          |
+
+如果您想設定 SERVER_PASSWORD，請注意以下訊息  
+當前遊戲測試版本在**非 community server** 有無法輸入密碼的 bug。  
 
 ### 首次啟動將會下載 Palworld 伺服器文件，可能需要一些時間 (取決於你的網絡狀況)
 
@@ -44,8 +56,17 @@ services:
     environment:
       TZ: "Asia/Taipei"
       PORT: 8211
-      PLAYERS: 16
+      PLAYERS: 32
       MULTITHREAD: true
+      ADMIN_PASSWORD: "youradminpassword"
+      SERVER_NAME: "Palworld Server"
+      SERVER_DESC: "Palworld Server Description"
+      # SERVER_PASSWORD: "yourserverpassword"
+      # COMMUNITY: false  # 如果你希望伺服器顯示在社群伺服器列表中，啟用此選項，(請設定 SERVER_PASSWORD)
+      # COMMUNITY_IP: 
+      # COMMUNITY_PORT: 8211
+      RCON_ENABLED: false
+      RCON_PORT: 25575
       CHECK_UPDATE_ON_START: false
     volumes:
       - ./palSaved:/home/steam/palworld/Pal/Saved
@@ -62,10 +83,16 @@ docker run -d \
   --restart always \
   -e TZ="Asia/Taipei" \
   -e PORT=8211 \
-  -e PLAYERS=16 \
+  -e PLAYERS=32 \
   -e MULTITHREAD=true \
+  -e ADMIN_PASSWORD="youradminpassword" \
+  -e SERVER_NAME="Palworld Server" \
+  -e SERVER_DESC="Palworld Server Description" \
+  -e SERVER_PASSWORD="" \
+  -e RCON_ENABLED=false \
+  -e RCON_PORT=25575 \
   -e CHECK_UPDATE_ON_START=false \
-  -v $(pwd)/palSaved:/home/steam/palworld/Pal/Saved \
+  -v ./palSaved:/home/steam/palworld/Pal/Saved \
   -p 8211:8211/udp \
   hmes98318/palworld-docker:latest
 ```
