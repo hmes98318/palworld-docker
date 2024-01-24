@@ -2,6 +2,7 @@
 [English](./README.md) | `繁體中文`
 
 一個可以輕鬆運行 Palworld 專用伺服器的 Docker 容器  
+如果需要安裝教學可以[在此查看](https://forum.gamer.com.tw/C.php?bsn=71458&snA=193)  
 [在 Docker Hub 上查看](https://hub.docker.com/r/hmes98318/palworld-docker)  
 
 
