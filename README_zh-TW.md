@@ -12,12 +12,12 @@
 | PORT                   | 伺服器監聽端口                       | 8211            | 0-65535             |
 | PLAYERS                | 最大玩家數                           | 16              | 1-32                |
 | MULTITHREAD            | 是否啟用多線程                       | true            | true/false          |
-| ADMIN_PASSWORD         | 伺服器管理員密碼                     | None            | 字串                 |
-| SERVER_NAME            | 伺服器名稱                         | 字串            | 字串                 |
-| SERVER_DESC            | 伺服器描述                         | 字串            | 字串                 |
-| SERVER_PASSWORD        | 伺服器密碼                         | None            | 字串                 |
+| ADMIN_PASSWORD         | 伺服器管理員密碼                     | None            | string                 |
+| SERVER_NAME            | 伺服器名稱                         | string            | string                 |
+| SERVER_DESC            | 伺服器描述                         | string            | string                 |
+| SERVER_PASSWORD        | 伺服器密碼                         | None            | string                 |
 | COMMUNITY              | 是否顯示在社群伺服器清單中 (請設定 SERVER_PASSWORD)    | false       | true/false           |
-| COMMUNITY_IP           | 社群伺服器的 IP 地址               | None              | 字串                 |
+| COMMUNITY_IP           | 社群伺服器的 IP 地址               | None              | string                 |
 | COMMUNITY_PORT         | 社群伺服器的端口號                 | 8211              | 0-65535              |
 | RCON_ENABLED           | 啟用伺服器的 RCON 功能             | true              | true/false           |
 | RCON_PORT              | RCON 端口號                        | 25575             | 0-65535              |
