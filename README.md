@@ -22,9 +22,6 @@ Docker container that can easily run Palworld dedicated server
 | RCON_PORT             | RCON port number                  | 25575          | 0-65535              |
 | CHECK_UPDATE_ON_START | Whether to automatically check for game updates every time you start it   | false           | true/false   |
 
-If you want to set SERVER_PASSWORD please pay attention to this message  
-The current game test version has a bug where passwords cannot be entered on non-community servers.  
-
 ### The first startup will download the Palworld server file, which may take a while (depends on your network condition)  
 
 

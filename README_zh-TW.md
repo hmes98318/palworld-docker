@@ -23,9 +23,6 @@
 | RCON_PORT              | RCON 端口號                        | 25575             | 0-65535              |
 | CHECK_UPDATE_ON_START  | 是否在每次啟動時自動檢查遊戲更新         | false         | true/false          |
 
-如果您想設定 SERVER_PASSWORD，請注意以下訊息  
-當前遊戲測試版本在**非 community server** 有無法輸入密碼的 bug。  
-
 ### 首次啟動將會下載 Palworld 伺服器文件，可能需要一些時間 (取決於你的網絡狀況)
 
 
