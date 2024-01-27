@@ -7,6 +7,7 @@ services:
     restart: always
     environment:
       TZ: "Asia/Taipei"
+      CHECK_UPDATE_ON_START: true
       PORT: 8211
       PLAYERS: 32
       MULTITHREAD: true
@@ -19,7 +20,6 @@ services:
       # COMMUNITY_PORT: 8211
       RCON_ENABLED: false
       RCON_PORT: 25575
-      CHECK_UPDATE_ON_START: false
     volumes:
       - ./palSaved:/home/steam/palworld/Pal/Saved
     ports:

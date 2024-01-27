@@ -8,6 +8,7 @@ Docker container that can easily run Palworld dedicated server
 ## Environments
 | Variable              | Describe                          | Default Values | Allowed Values       |
 |-----------------------|-----------------------------------|----------------|----------------------|
+| CHECK_UPDATE_ON_START | Whether to automatically check for game updates every time you start it   | true           | true/false   |
 | PORT                  | The server listening port         | 8211           | 0-65535              |
 | PLAYERS               | Max number of players             | 16             | 1-32                 |
 | MULTITHREAD           | Whether to enable multithreading  | true           | true/false           |
@@ -20,7 +21,6 @@ Docker container that can easily run Palworld dedicated server
 | COMMUNITY_PORT        | The port of the community server  | 8211           | 0-65535              |
 | RCON_ENABLED          | Enable RCON for your server       | true           | true/false           |
 | RCON_PORT             | RCON port number                  | 25575          | 0-65535              |
-| CHECK_UPDATE_ON_START | Whether to automatically check for game updates every time you start it   | false           | true/false   |
 
 ### The first startup will download the Palworld server file, which may take a while (depends on your network condition)  
 
@@ -51,6 +51,7 @@ services:
     restart: always
     environment:
       TZ: "Asia/Taipei"
+      CHECK_UPDATE_ON_START: true
       PORT: 8211
       PLAYERS: 32
       MULTITHREAD: true
@@ -63,7 +64,6 @@ services:
       # COMMUNITY_PORT: 8211
       RCON_ENABLED: false
       RCON_PORT: 25575
-      CHECK_UPDATE_ON_START: false
     volumes:
       - ./palSaved:/home/steam/palworld/Pal/Saved
     ports:
@@ -78,6 +78,7 @@ docker run -d \
   --name palserver \
   --restart always \
   -e TZ="Asia/Taipei" \
+  -e CHECK_UPDATE_ON_START=true \
   -e PORT=8211 \
   -e PLAYERS=32 \
   -e MULTITHREAD=true \
@@ -87,7 +88,6 @@ docker run -d \
   -e SERVER_PASSWORD="" \
   -e RCON_ENABLED=false \
   -e RCON_PORT=25575 \
-  -e CHECK_UPDATE_ON_START=false \
   -v ./palSaved:/home/steam/palworld/Pal/Saved \
   -p 8211:8211/udp \
   hmes98318/palworld-docker:latest
