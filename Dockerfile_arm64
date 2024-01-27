@@ -1,0 +1,104 @@
+# linux/arm64
+
+FROM ubuntu:22.04 as fex_build
+
+
+RUN dpkg --add-architecture arm64 && \
+    apt-get update && \
+    apt-get install -y \
+    cmake \
+    ninja-build \
+    clang \
+    libglfw3-dev:arm64 \
+    libsdl2-dev:arm64 \
+    libepoxy-dev:arm64 \
+    g++-x86-64-linux-gnu \
+    nasm \
+    git && \
+    apt-get clean && rm -rf /var/lib/apt/lists/*
+
+
+WORKDIR /tmp
+
+RUN git clone https://github.com/FEX-Emu/FEX.git && \
+    cd FEX && \
+    git submodule update --init && \
+    mkdir Build && \
+    cd Build && \
+    CC=clang CXX=clang++ cmake -DCMAKE_INSTALL_PREFIX=/usr -DCMAKE_BUILD_TYPE=Release -DENABLE_LTO=True -DBUILD_TESTS=False -G Ninja .. && \
+    ninja
+
+RUN cd FEX/Build && \
+    ninja install && \
+    ninja binfmt_misc_32 && \
+    ninja binfmt_misc_64
+
+RUN rm -rf FEX
+
+
+############################################################
+
+FROM ubuntu:22.04 as steam_build
+
+COPY --from=fex_build /usr/ /usr/
+
+
+RUN apt-get update -y && \
+    apt-get install -y sudo curl && \
+    apt-get clean && rm -rf /var/lib/apt/lists/*
+
+RUN useradd -m -s /bin/bash steam
+
+
+USER steam
+
+WORKDIR /home/steam/.fex-emu/RootFS
+
+# This rootfs is based on https://github.com/TeriyakiGod/steamcmd-docker-arm64
+
+# COPY Ubuntu_22_04.tar.gz .
+RUN curl -sqL "https://github.com/hmes98318/palworld-docker/raw/055f6759d6ced37ee23d4bdffdc30583d8eae751/RootFS/Ubuntu_22_04.tar.gz" | tar zxvf - && \
+    echo '{"Config":{"RootFS":"Ubuntu_22_04"}}' > ../Config.js
+
+
+WORKDIR /home/steam/steamcmd
+
+RUN curl -sqL "https://steamcdn-a.akamaihd.net/client/installer/steamcmd_linux.tar.gz" | tar zxvf - && \
+    echo './steamcmd.sh +quit' > init_steam.sh && \
+    chmod +x init_steam.sh && \
+    FEXBash ./init_steam.sh && \
+    mkdir -p ~/.steam/sdk64/ && \
+    ln -s ~/steamcmd/linux64/steamclient.so ~/.steam/sdk64/steamclient.so && \
+    rm init_steam.sh
+
+
+############################################################
+
+FROM steam_build
+
+
+USER steam
+
+WORKDIR /home/steam/steamcmd
+
+RUN echo "$(uname -m)" > platform
+RUN mkdir -p /home/steam/palworld/Pal/Saved
+
+COPY DefaultPalWorldSettings.ini /home/steam/palworld/DefaultPalWorldSettings.ini
+COPY entrypoint.sh /home/steam/palworld/entrypoint.sh
+
+
+USER root
+
+RUN chown steam:steam /home/steam/palworld/DefaultPalWorldSettings.ini && \
+    chown steam:steam /home/steam/palworld/entrypoint.sh && \
+    chmod +x /home/steam/palworld/entrypoint.sh
+
+
+USER steam
+
+EXPOSE 8211/udp
+
+VOLUME ["/home/steam/palworld/Pal/Saved"]
+
+ENTRYPOINT ["FEXBash", "/home/steam/palworld/entrypoint.sh"]
