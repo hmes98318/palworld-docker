@@ -5,6 +5,7 @@
 
 VERSION="v0.2.0"
 STEAMCMD="/home/steam/steamcmd/steamcmd.sh"
+PLATFORM="$(cat /home/steam/steamcmd/platform)"
 PALWORLD_DIR="/home/steam/palworld"
 PALWORLD_SETTINGS="$PALWORLD_DIR/Pal/Saved/Config/LinuxServer/PalWorldSettings.ini"
 
@@ -34,6 +35,7 @@ print_system_info() {
   echo "Author: hmes98318"
   echo "GitHub: https://github.com/hmes98318/palworld-docker"
   echo "----------------------------------------"
+  echo "Platform: $PLATFORM"
   echo "OS: $(cat /etc/os-release | grep "^PRETTY_NAME" | cut -d'=' -f2)"
   echo "CPU: $(grep 'model name' /proc/cpuinfo | uniq | cut -d':' -f2)"
   echo "RAM: $(awk '/MemTotal/ {total=$2} /MemFree/ {free=$2} END {printf("%.2fGB/%.2fGB", (total-free)/1024000, total/1024000)}' /proc/meminfo)"
@@ -149,12 +151,12 @@ main(){
 
   if [ ! -f "$PALWORLD_SETTINGS" ]; then
     echo "-> Initializing PalServer to generate settings file..."
-    timeout -s SIGTERM 20s "$PALWORLD_DIR/PalServer.sh"
+    timeout -s SIGTERM 30s "$PALWORLD_DIR/PalServer.sh"
     cp "$PALWORLD_DIR/DefaultPalWorldSettings.ini" "$PALWORLD_SETTINGS"
 
     # Check if initialization is successful
     if [ ! -f "$PALWORLD_SETTINGS" ]; then
-      echo "Initialization failed: Unable to generate settings file." >&2
+      echo "Initialization failed: Unable to generate settings file. Please make sure the mounted archive directory has proper read and write permissions." >&2
       exit 1
     fi
 
