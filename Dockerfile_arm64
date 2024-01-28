@@ -60,7 +60,7 @@ WORKDIR /home/steam/.fex-emu/RootFS
 # This rootfs is based on https://github.com/TeriyakiGod/steamcmd-docker-arm64
 
 # COPY Ubuntu_22_04.tar.gz .
-RUN curl -sqL "https://github.com/hmes98318/palworld-docker/raw/055f6759d6ced37ee23d4bdffdc30583d8eae751/RootFS/Ubuntu_22_04.tar.gz" -o Ubuntu_22_04.tar.gz && \
+RUN curl -sqL "https://github.com/hmes98318/palworld-docker/raw/055f6759d6ced37ee23d4bdffdc30583d8eae751/RootFS/Ubuntu_22_04.tar.gz" -o Ubuntu_22_04.tar.gz
 RUN tar -zxvf ./Ubuntu_22_04.tar.gz && \
     rm ./Ubuntu_22_04.tar.gz && \
     echo '{"Config":{"RootFS":"Ubuntu_22_04"}}' > ../Config.json
