@@ -8,6 +8,7 @@ USER steam
 
 WORKDIR /home/steam/steamcmd
 
+RUN echo "$(uname -m)" > platform
 RUN mkdir -p /home/steam/palworld/Pal/Saved
 
 COPY DefaultPalWorldSettings.ini /home/steam/palworld/DefaultPalWorldSettings.ini
@@ -16,9 +17,9 @@ COPY entrypoint.sh /home/steam/palworld/entrypoint.sh
 
 USER root
 
-RUN chown steam:steam /home/steam/palworld/DefaultPalWorldSettings.ini
-RUN chown steam:steam /home/steam/palworld/entrypoint.sh
-RUN chmod +x /home/steam/palworld/entrypoint.sh
+RUN chown steam:steam /home/steam/palworld/DefaultPalWorldSettings.ini && \
+    chown steam:steam /home/steam/palworld/entrypoint.sh && \
+    chmod +x /home/steam/palworld/entrypoint.sh
 
 
 USER steam
